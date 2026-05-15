@@ -1,17 +1,56 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+import re
+from datetime import date
 
-url = "https://en.wikipedia.org/wiki/ATP_rankings"
-headers = {"User-Agent": "Mozilla/5.0"}
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
+def clean_name(name):
+    return re.sub(r'\(.*?\)', '', name).strip()
 
-tables = soup.find_all("table", class_="wikitable")
-print(f"Total tablas encontradas: {len(tables)}")
+def get_atp_rankings():
+    url = "https://en.wikipedia.org/wiki/ATP_rankings"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
 
-for i, table in enumerate(tables):
-    rows = table.find_all("tr")
-    print(f"\n--- Tabla {i} ({len(rows)} filas) ---")
-    for row in rows[:3]:  # Solo primeras 3 filas
-        cols = row.find_all(["th", "td"])
-        print([c.get_text(strip=True) for c in cols])
+    tables = soup.find_all("table", class_="wikitable")
+    
+    # Tabla 4 = ATP rankings singles (52 semanas)
+    table = tables[4]
+    rows = table.find_all("tr")[2:]  # saltar 2 headers
+    rankings = []
+
+    for row in rows:
+        cols = row.find_all("td")
+        if len(cols) < 3:
+            continue
+
+        rank = cols[0].get_text(strip=True)
+        if not rank.isdigit():
+            continue
+
+        rank = int(rank)
+        if rank > 5:
+            break
+
+        name = clean_name(cols[1].get_text(strip=True))
+        points_text = cols[2].get_text(strip=True).replace(",", "").replace(".", "")
+        points = int(points_text) if points_text.isdigit() else 0
+
+        rankings.append({
+            "rank": rank,
+            "name": name,
+            "points": points
+        })
+
+    return rankings
+
+data = {
+    "updated_at": str(date.today()),
+    "rankings": get_atp_rankings()
+}
+
+with open("rankings.json", "w") as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
+
+print("JSON generado:", data)
