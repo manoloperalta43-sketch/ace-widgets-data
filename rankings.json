@@ -1,0 +1,35 @@
+{
+  "updated_at": "2026-05-15",
+  "rankings": [
+    {
+      "rank": 1,
+      "name": "Jannik Sinner(ITA)",
+      "points": 4900,
+      "movement": "▲+6"
+    },
+    {
+      "rank": 2,
+      "name": "Carlos Alcaraz(ESP)",
+      "points": 3650,
+      "movement": "▲+6"
+    },
+    {
+      "rank": 3,
+      "name": "Alexander Zverev(GER)",
+      "points": 2940,
+      "movement": "▲+8"
+    },
+    {
+      "rank": 4,
+      "name": "Arthur Fils(FRA)",
+      "points": 1880,
+      "movement": "▲+8"
+    },
+    {
+      "rank": 5,
+      "name": "Daniil Medvedev",
+      "points": 1810,
+      "movement": "▲+9"
+    }
+  ]
+}
