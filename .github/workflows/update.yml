@@ -1,0 +1,33 @@
+name: Update ATP Rankings
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Cada lunes a las 6am UTC
+  workflow_dispatch:       # También permite correrlo manualmente
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run scraper
+        run: python scraper.py
+
+      - name: Commit JSON actualizado
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add rankings.json
+          git diff --cached --quiet || git commit -m "Update ATP rankings $(date +%Y-%m-%d)"
+          git push
