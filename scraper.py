@@ -16,33 +16,47 @@ def get_atp_rankings():
     tables = soup.find_all("table", class_="wikitable")
     rankings = []
 
-    for table in tables:
-        rows = table.find_all("tr")[1:]
-        for row in rows:
-            cols = row.find_all("td")
-            if len(cols) < 3:
-                continue
+    # La segunda tabla es el ranking ATP oficial (52 semanas)
+    table = tables[1]
+    rows = table.find_all("tr")[1:]
 
-            rank = cols[0].get_text(strip=True)
-            if not rank.isdigit():
-                continue
+    for row in rows:
+        cols = row.find_all("td")
+        if len(cols) < 3:
+            continue
 
-            rank = int(rank)
-            if rank > 5:
-                break
+        rank = cols[0].get_text(strip=True)
+        if not rank.isdigit():
+            continue
 
-            name = clean_name(cols[1].get_text(strip=True))
-            points_text = cols[2].get_text(strip=True).replace(",", "").replace(".", "")
-            points = int(points_text) if points_text.isdigit() else 0
-
-            rankings.append({
-                "rank": rank,
-                "name": name,
-                "points": points
-            })
-
-        if len(rankings) == 5:
+        rank = int(rank)
+        if rank > 5:
             break
+
+        name = clean_name(cols[1].get_text(strip=True))
+        points_text = cols[2].get_text(strip=True).replace(",", "").replace(".", "")
+        points = int(points_text) if points_text.isdigit() else 0
+
+        # Movimiento real de Wikipedia
+        movement = "–"
+        if len(cols) >= 4:
+            move_text = cols[3].get_text(strip=True)
+            match = re.search(r'(\d+)', move_text)
+            if match:
+                move = int(match.group(1))
+                if "▲" in move_text or "▴" in move_text:
+                    movement = f"▲+{move}"
+                elif "▼" in move_text or "▾" in move_text:
+                    movement = f"▼-{move}"
+            elif "—" in move_text or "-" in move_text:
+                movement = "–"
+
+        rankings.append({
+            "rank": rank,
+            "name": name,
+            "points": points,
+            "movement": movement
+        })
 
     return rankings
 
