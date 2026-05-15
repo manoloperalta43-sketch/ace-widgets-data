@@ -5,7 +5,6 @@ import re
 from datetime import date
 
 def clean_name(name):
-    # Quitar el país pegado al nombre ej: "Jannik Sinner(ITA)"
     return re.sub(r'\(.*?\)', '', name).strip()
 
 def get_atp_rankings():
@@ -36,26 +35,10 @@ def get_atp_rankings():
             points_text = cols[2].get_text(strip=True).replace(",", "").replace(".", "")
             points = int(points_text) if points_text.isdigit() else 0
 
-            # Movimiento: buscar columna con ▲ o ▼ o número con signo
-            movement = "–"
-            for col in cols[3:]:
-                text = col.get_text(strip=True)
-                match = re.search(r'([+\-]?\d+)', text)
-                if match:
-                    move = int(match.group(1))
-                    if move > 0:
-                        movement = f"▲+{move}"
-                    elif move < 0:
-                        movement = f"▼{move}"
-                    else:
-                        movement = "–"
-                    break
-
             rankings.append({
                 "rank": rank,
                 "name": name,
-                "points": points,
-                "movement": movement
+                "points": points
             })
 
         if len(rankings) == 5:
