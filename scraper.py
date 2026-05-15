@@ -1,7 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import re
 from datetime import date
+
+def clean_name(name):
+    # Quitar el país pegado al nombre ej: "Jannik Sinner(ITA)"
+    return re.sub(r'\(.*?\)', '', name).strip()
 
 def get_atp_rankings():
     url = "https://en.wikipedia.org/wiki/ATP_rankings"
@@ -9,22 +14,17 @@ def get_atp_rankings():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    # Buscar la tabla de rankings
     tables = soup.find_all("table", class_="wikitable")
     rankings = []
-    previous = {}
 
     for table in tables:
-        rows = table.find_all("tr")[1:]  # saltar header
+        rows = table.find_all("tr")[1:]
         for row in rows:
             cols = row.find_all("td")
             if len(cols) < 3:
                 continue
 
             rank = cols[0].get_text(strip=True)
-            name = cols[1].get_text(strip=True)
-            points = cols[2].get_text(strip=True).replace(",", "")
-
             if not rank.isdigit():
                 continue
 
@@ -32,30 +32,33 @@ def get_atp_rankings():
             if rank > 5:
                 break
 
-            # Movimiento (si existe columna)
-            move = 0
-            if len(cols) >= 4:
-                move_text = cols[3].get_text(strip=True)
-                try:
-                    move = int(move_text.replace("+", ""))
-                except:
-                    move = 0
+            name = clean_name(cols[1].get_text(strip=True))
+            points_text = cols[2].get_text(strip=True).replace(",", "").replace(".", "")
+            points = int(points_text) if points_text.isdigit() else 0
 
-            if move > 0:
-                movement = f"▲+{move}"
-            elif move < 0:
-                movement = f"▼{move}"
-            else:
-                movement = "–"
+            # Movimiento: buscar columna con ▲ o ▼ o número con signo
+            movement = "–"
+            for col in cols[3:]:
+                text = col.get_text(strip=True)
+                match = re.search(r'([+\-]?\d+)', text)
+                if match:
+                    move = int(match.group(1))
+                    if move > 0:
+                        movement = f"▲+{move}"
+                    elif move < 0:
+                        movement = f"▼{move}"
+                    else:
+                        movement = "–"
+                    break
 
             rankings.append({
                 "rank": rank,
                 "name": name,
-                "points": int(points) if points.isdigit() else 0,
+                "points": points,
                 "movement": movement
             })
 
-        if rankings:
+        if len(rankings) == 5:
             break
 
     return rankings
