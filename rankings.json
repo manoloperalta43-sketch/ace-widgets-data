@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-05-25",
+  "updated_at": "2026-06-01",
   "rankings": [
     {
       "rank": 1,
       "name": "Jannik Sinner",
-      "points": 14700
+      "points": 14750
     },
     {
       "rank": 2,
@@ -19,12 +19,12 @@
     {
       "rank": 4,
       "name": "Novak Djokovic",
-      "points": 4710
+      "points": 4460
     },
     {
       "rank": 5,
-      "name": "Felix Auger-Aliassime",
-      "points": 4060
+      "name": "Ben Shelton",
+      "points": 4070
     }
   ]
 }
