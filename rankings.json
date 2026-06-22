@@ -1,20 +1,20 @@
 {
-  "updated_at": "2026-06-15",
+  "updated_at": "2026-06-22",
   "rankings": [
     {
       "rank": 1,
       "name": "Jannik Sinner",
-      "points": 13500
+      "points": 13450
     },
     {
       "rank": 2,
       "name": "Carlos Alcaraz",
-      "points": 9960
+      "points": 9460
     },
     {
       "rank": 3,
       "name": "Alexander Zverev",
-      "points": 7305
+      "points": 7190
     },
     {
       "rank": 4,
@@ -24,7 +24,7 @@
     {
       "rank": 5,
       "name": "Ben Shelton",
-      "points": 3920
+      "points": 4160
     }
   ]
 }
