@@ -1,30 +1,30 @@
 {
-  "updated_at": "2026-08-24",
+  "updated_at": "2026-08-31",
   "rankings": [
     {
       "rank": 1,
       "name": "Jannik Sinner",
-      "points": 13450
+      "points": 12800
     },
     {
       "rank": 2,
-      "name": "Carlos Alcaraz",
-      "points": 8160
+      "name": "Alexander Zverev",
+      "points": 7790
     },
     {
       "rank": 3,
-      "name": "Alexander Zverev",
-      "points": 8090
+      "name": "Carlos Alcaraz",
+      "points": 7160
     },
     {
       "rank": 4,
       "name": "Félix Auger-Aliassime",
-      "points": 4740
+      "points": 4640
     },
     {
       "rank": 5,
       "name": "Novak Djokovic",
-      "points": 3760
+      "points": 3770
     }
   ]
 }
