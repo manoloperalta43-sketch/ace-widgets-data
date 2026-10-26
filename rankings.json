@@ -1,30 +1,30 @@
 {
-  "updated_at": "2026-10-19",
+  "updated_at": "2026-10-26",
   "rankings": [
     {
       "rank": 1,
       "name": "Jannik Sinner",
-      "points": 11000
+      "points": 10950
     },
     {
       "rank": 2,
       "name": "Alexander Zverev",
-      "points": 9720
+      "points": 10070
     },
     {
       "rank": 3,
       "name": "Carlos Alcaraz",
-      "points": 5560
+      "points": 5610
     },
     {
       "rank": 4,
       "name": "Ben Shelton",
-      "points": 4680
+      "points": 4720
     },
     {
       "rank": 5,
-      "name": "Félix Auger-Aliassime",
-      "points": 3890
+      "name": "Daniil Medvedev",
+      "points": 3660
     }
   ]
 }
